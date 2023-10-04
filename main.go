@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	Token = "Bot " + os.Getenv("TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
+	Token     = "Bot " + os.Getenv("TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	stopBot   = make(chan bool)
 	vcsession *discordgo.VoiceConnection
 )
 
-// スラッシュコマンドの追加
+// セッションの定義
 var discord *discordgo.Session
 
 func main() {
@@ -38,6 +38,7 @@ func main() {
 		fmt.Println("Error logging in")
 		fmt.Println(err)
 	}
+	// websocketを開いてlistening開始
 	if err = discord.Open(); err != nil {
 		panic("Error while opening session")
 	}
@@ -52,26 +53,18 @@ func main() {
 		commandHandlers = append(commandHandlers, commandHandler)
 	}
 
-	// websocketを開いてlistening開始
-	err = discord.Open()
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer discord.Close()
-
 	fmt.Println("Discordに接続しました。")
 	fmt.Println("終了するにはCtrl+Cを押してください。")
 	//sc := make(chan os.Signal, 1)
 	//signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-stopBot //プログラムが終了しないようロック
 
-	err = discord.Close()
-
 	fmt.Println("Removing commands...")
 
+	// コマンドを削除
 	for i := range guilds {
+		// すべてのコマンドを取得
 		commands := commandHandlers[i].GetCommands()
-		//fmt.Println(guild)
 		for _, command := range commands {
 			err := commandHandlers[i].CommandRemove(command)
 			if err != nil {
@@ -80,5 +73,10 @@ func main() {
 		}
 	}
 
-	return
+	// websocketを閉じる
+	err = discord.Close()
+	if err != nil {
+		panic("error closing connection")
+	}
+	fmt.Println("Disconnected")
 }
