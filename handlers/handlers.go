@@ -6,6 +6,13 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 )
+/*
+スラッシュコマンドとハンドラの登録
+
+スラッシュコマンドとハンドラの登録は、
+discordgo.Session.ApplicationCommandCreate()と
+discordgo.Session.AddHandler()を使って行います。
+*/
 
 type Handler struct {
 	session  *discordgo.Session
@@ -13,10 +20,12 @@ type Handler struct {
 	guild    string
 }
 
+// ハンドラーの登録
 func RegisterHandlers(s *discordgo.Session) {
 	s.AddHandler(OnMessageCreate)
 }
 
+// スラッシュコマンドの作成
 func NewCommandHandler(session *discordgo.Session, guildID string) *Handler {
 	return &Handler{
 		session:  session,
@@ -25,6 +34,7 @@ func NewCommandHandler(session *discordgo.Session, guildID string) *Handler {
 	}
 }
 
+// スラッシュコマンドの登録
 func (h *Handler) CommandRegister(command *Command) error {
 	if _, exists := h.commands[command.Name]; exists {
 		return fmt.Errorf("command with name `%s` already exists", command.Name)
@@ -57,6 +67,7 @@ func (h *Handler) CommandRegister(command *Command) error {
 	return nil
 }
 
+// スラッシュコマンドの削除
 func (h *Handler) CommandRemove(command *Command) error {
 	err := h.session.ApplicationCommandDelete(h.session.State.User.ID, h.guild, command.AppCommand.ID)
 	if err != nil {
@@ -68,6 +79,7 @@ func (h *Handler) CommandRemove(command *Command) error {
 	return nil
 }
 
+// スラッシュコマンドの取得
 func (h *Handler) GetCommands() []*Command {
 	var commands []*Command
 
