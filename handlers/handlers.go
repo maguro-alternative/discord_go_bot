@@ -6,6 +6,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 )
+
 /*
 スラッシュコマンドとハンドラの登録
 
