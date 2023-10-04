@@ -29,13 +29,9 @@ func handlePing(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 		コマンドの実行結果を返す
 	*/
-	guilds, err := s.UserGuilds(100, "", "")
-	if err != nil {
-		fmt.Println(err)
-	}
-	for _, guild := range guilds {
-		if guild.ID == i.GuildID {
-			err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	if i.Interaction.ApplicationCommandData().Name == "ping" {
+		if i.Interaction.GuildID == i.GuildID {
+			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
 					Content: "Pong",
@@ -46,4 +42,5 @@ func handlePing(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			}
 		}
 	}
+
 }

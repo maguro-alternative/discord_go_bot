@@ -23,6 +23,7 @@ type Handler struct {
 
 // ハンドラーの登録
 func RegisterHandlers(s *discordgo.Session) {
+	fmt.Println(s.State.User.Username + "としてログインしました")
 	s.AddHandler(OnMessageCreate)
 }
 
@@ -35,6 +36,10 @@ func NewCommandHandler(session *discordgo.Session, guildID string) *Handler {
 	}
 }
 
+func (h *Handler) GuildCommandAdd() error {
+	return nil
+}
+
 // スラッシュコマンドの登録
 func (h *Handler) CommandRegister(command *Command) error {
 	if _, exists := h.commands[command.Name]; exists {
@@ -45,8 +50,9 @@ func (h *Handler) CommandRegister(command *Command) error {
 		h.session.State.User.ID,
 		h.guild,
 		&discordgo.ApplicationCommand{
-			ID:            command.Name,
+			//ID:            command.AppCommand.ID,
 			ApplicationID: h.session.State.User.ID,
+			//GuildID:       h.guild,
 			Name:          command.Name,
 			Description:   command.Description,
 			Options:       command.Options,
@@ -60,10 +66,14 @@ func (h *Handler) CommandRegister(command *Command) error {
 	command.AddApplicationCommand(appCmd)
 
 	h.commands[command.Name] = command
+	//fmt.Println(h.commands[command.Name])
 
-	h.session.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		command.Executor(s, i)
-	})
+	h.session.AddHandler(
+		func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			command.Executor(s, i)
+		},
+	)
+	//fmt.Println(h.session)
 
 	return nil
 }

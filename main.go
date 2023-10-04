@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/signal"
 
 	"github.com/maguro-alternative/discord_go_bot/commands"
 	"github.com/maguro-alternative/discord_go_bot/handlers"
@@ -24,7 +25,7 @@ func main() {
 
 	//Discordのセッションを作成
 	errr := godotenv.Load()
-	Token = "Bot " + os.Getenv("TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
+	Token = "Bot " + os.Getenv("D_TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	if errr != nil {
 		fmt.Println("Error loading .env file")
 		os.Exit(1)
@@ -43,27 +44,31 @@ func main() {
 		panic("Error while opening session")
 	}
 
-	// 所属しているサーバすべてを取得
-	guilds, err := discord.UserGuilds(100, "", "")
+	// ハンドラーの登録
+	handlers.RegisterHandlers(discord)
+
 	var commandHandlers []*handlers.Handler
 	// 所属しているサーバすべてにスラッシュコマンドを追加する
-	for _, guild := range guilds {
-		commandHandler := handlers.NewCommandHandler(discord, guild.ID)
-		// 追加したいコマンドをここに追加
-		commandHandler.CommandRegister(commands.PingCommand())
-		commandHandlers = append(commandHandlers, commandHandler)
-	}
+	commandHandler := handlers.NewCommandHandler(discord, "")
+	// 追加したいコマンドをここに追加
+	commandHandler.CommandRegister(commands.PingCommand())
+	commandHandler.CommandRegister(commands.RecordCommand())
+	commandHandler.CommandRegister(commands.DisconnectCommand())
+	commandHandlers = append(commandHandlers, commandHandler)
 
 	fmt.Println("Discordに接続しました。")
 	fmt.Println("終了するにはCtrl+Cを押してください。")
-	//sc := make(chan os.Signal, 1)
-	//signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
-	<-stopBot //プログラムが終了しないようロック
+
+	// Ctrl+Cを受け取るためのチャンネル
+	sc := make(chan os.Signal, 1)
+	// Ctrl+Cを受け取る
+	signal.Notify(sc, os.Interrupt)
+	<-sc //プログラムが終了しないようロック
 
 	fmt.Println("Removing commands...")
 
 	// コマンドを削除
-	for i := range guilds {
+	for i := range commandHandlers {
 		// すべてのコマンドを取得
 		commands := commandHandlers[i].GetCommands()
 		for _, command := range commands {
