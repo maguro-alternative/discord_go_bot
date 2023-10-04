@@ -49,6 +49,7 @@ func main() {
 	// 所属しているサーバすべてにスラッシュコマンドを追加する
 	for _, guild := range guilds {
 		commandHandler := handlers.NewCommandHandler(discord, guild.ID)
+		// 追加したいコマンドをここに追加
 		commandHandler.CommandRegister(commands.PingCommand())
 		commandHandlers = append(commandHandlers, commandHandler)
 	}

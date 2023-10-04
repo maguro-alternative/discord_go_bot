@@ -31,10 +31,11 @@ func (h *Handler) CommandRegister(command *Command) error {
 	}
 
 	appCmd, err := h.session.ApplicationCommandCreate(
-        h.session.State.User.ID,
+		h.session.State.User.ID,
 		h.guild,
 		&discordgo.ApplicationCommand{
 			ID:            command.Name,
+			ApplicationID: h.session.State.User.ID,
 			Name:          command.Name,
 			Description:   command.Description,
 			Options:       command.Options,
