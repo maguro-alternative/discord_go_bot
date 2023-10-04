@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"os/signal"
 
+	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
 	"github.com/maguro-alternative/discord_go_bot/commands"
-	"github.com/maguro-alternative/discord_go_bot/handlers"
+	"github.com/maguro-alternative/discord_go_bot/db"
+	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
@@ -22,7 +26,6 @@ var (
 var discord *discordgo.Session
 
 func main() {
-
 	//Discordのセッションを作成
 	errr := godotenv.Load()
 	Token = "Bot " + os.Getenv("D_TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
@@ -58,6 +61,28 @@ func main() {
 
 	fmt.Println("Discordに接続しました。")
 	fmt.Println("終了するにはCtrl+Cを押してください。")
+
+	const (
+		defaultPort   = ":8080"
+		defaultDBPath = ".sqlite3/todo.db"
+	)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = defaultDBPath
+	}
+
+	todoDB, err := db.NewDB(dbPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	mux := router.NewRouter(todoDB)
+	log.Fatal(http.ListenAndServe(port, mux))
 
 	// Ctrl+Cを受け取るためのチャンネル
 	sc := make(chan os.Signal, 1)

@@ -2,7 +2,7 @@ package commands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/maguro-alternative/discord_go_bot/handlers"
+	"github.com/maguro-alternative/discord_go_bot/bot_handler"
 )
 
 func DisconnectCommand() *handlers.Command {

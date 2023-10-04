@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/maguro-alternative/discord_go_bot/handlers"
+	"github.com/maguro-alternative/discord_go_bot/bot_handler"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/pion/rtp"

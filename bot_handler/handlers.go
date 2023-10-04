@@ -36,10 +36,6 @@ func NewCommandHandler(session *discordgo.Session, guildID string) *Handler {
 	}
 }
 
-func (h *Handler) GuildCommandAdd() error {
-	return nil
-}
-
 // スラッシュコマンドの登録
 func (h *Handler) CommandRegister(command *Command) error {
 	if _, exists := h.commands[command.Name]; exists {
