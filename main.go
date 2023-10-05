@@ -53,7 +53,8 @@ func main() {
 	fmt.Println("Discordに接続しました。")
 	fmt.Println("終了するにはCtrl+Cを押してください。")
 
-	// サーバーの待ち受けを開始
+	// サーバーの待ち受けを開始(ゴルーチンで非同期処理)
+	// ここでサーバーを起動すると、Ctrl+Cで終了するまでサーバーが起動し続ける
 	go func() {
 		const (
 			defaultPort   = ":8080"
@@ -64,7 +65,8 @@ func main() {
 		if port == "" {
 			port = defaultPort
 		}
-		dbPath := "host=" + env.DatabaseHost + " port=" + env.DatabasePort + " user=" + env.DatabaseUser + " dbname=" + env.DatabaseName + " password=" + env.DatabasePassword //+ " sslmode=disable"
+		//dbPath := env.DatabaseURL
+		dbPath := env.DatabaseType + "://" + env.DatabaseHost + ":" + env.DatabasePort + "/" + env.DatabaseName + "?" + "user=" + env.DatabaseUser + "&" + "password=" + env.DatabasePassword + "&" + "sslmode=disable"
 
 		indexDB, err := db.NewPostgresDB(dbPath)
 		if err != nil {

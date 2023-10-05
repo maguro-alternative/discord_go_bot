@@ -8,6 +8,8 @@ import (
 
 type Env struct {
 	TOKEN            string
+	DatabaseType	 string
+	DatabaseURL      string
 	DatabaseName     string
 	DatabaseUser     string
 	DatabasePassword string
@@ -24,6 +26,8 @@ func NewEnv() (*Env, error) {
 
 	return &Env{
 		TOKEN:            os.Getenv("D_TOKEN"),
+		DatabaseType:	  "postgresql",
+		DatabaseURL:      os.Getenv("PGURL"),
 		DatabaseName:     os.Getenv("PGDATABASE"),
 		DatabaseUser:     os.Getenv("PGUSER"),
 		DatabasePassword: os.Getenv("PGPASSWORD"),
