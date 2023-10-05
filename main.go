@@ -11,9 +11,9 @@ import (
 	"github.com/maguro-alternative/discord_go_bot/commands"
 	"github.com/maguro-alternative/discord_go_bot/db"
 	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
+	"github.com/maguro-alternative/discord_go_bot/model"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -27,12 +27,8 @@ var discord *discordgo.Session
 
 func main() {
 	//Discordのセッションを作成
-	errr := godotenv.Load()
-	Token = "Bot " + os.Getenv("D_TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
-	if errr != nil {
-		fmt.Println("Error loading .env file")
-		os.Exit(1)
-	}
+	env,err := model.NewEnv()
+	Token = "Bot " + env.TOKEN //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	discord, err := discordgo.New(Token)
 
 	// 権限追加
@@ -62,29 +58,28 @@ func main() {
 	fmt.Println("Discordに接続しました。")
 	fmt.Println("終了するにはCtrl+Cを押してください。")
 
-	const (
-		defaultPort   = ":8080"
-		defaultDBPath = ".sqlite3/todo.db"
-	)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
-	dbPath := os.Getenv("DB_PATH")
-	if dbPath == "" {
-		dbPath = defaultDBPath
-	}
-
-	indexDB, err := db.NewDB(dbPath)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	mux := router.NewRouter(indexDB)
 	// サーバーの待ち受けを開始
-	log.Printf("Serving HTTP port: %s\n", port)
-	go log.Fatal(http.ListenAndServe(port, mux))
+	go func() {
+		const (
+			defaultPort   = ":8080"
+			defaultDBPath = ".sqlite3/todo.db"
+		)
+
+		port := env.ServerPort
+		if port == "" {
+			port = defaultPort
+		}
+		dbPath := "host=" + env.DatabaseHost + " port=" + env.DatabasePort + " user=" + env.DatabaseUser + " dbname=" + env.DatabaseName + " password=" + env.DatabasePassword //+ " sslmode=disable"
+
+		indexDB, err := db.NewPostgresDB(dbPath)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		mux := router.NewRouter(indexDB)
+		log.Printf("Serving HTTP port: %s\n", port)
+		log.Fatal(http.ListenAndServe(port, mux))
+	}()
 
 	// Ctrl+Cを受け取るためのチャンネル
 	sc := make(chan os.Signal, 1)
