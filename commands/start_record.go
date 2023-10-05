@@ -27,11 +27,12 @@ func RecordCommand() *botHandler.Command {
 	}
 }
 
+// DiscordのパケットをPion RTPパケットに変換
 func createPionRTPPacket(p *discordgo.Packet) *rtp.Packet {
 	return &rtp.Packet{
 		Header: rtp.Header{
 			Version: 2,
-			// Taken from Discord voice docs
+			// Discord voiceのドキュメントから取得
 			PayloadType:    0x78,
 			SequenceNumber: p.Sequence,
 			Timestamp:      p.Timestamp,
@@ -41,11 +42,13 @@ func createPionRTPPacket(p *discordgo.Packet) *rtp.Packet {
 	}
 }
 
+// 音声データの取り扱い（保存）
 func handleVoice(c chan *discordgo.Packet) {
 	files := make(map[uint32]media.Writer)
 	for p := range c {
 		file, ok := files[p.SSRC]
 		if !ok {
+			// 新しいOGGファイルの作成
 			var err error
 			file, err = oggwriter.New(fmt.Sprintf("%d.ogg", p.SSRC), 48000, 2)
 			if err != nil {
@@ -54,7 +57,7 @@ func handleVoice(c chan *discordgo.Packet) {
 			}
 			files[p.SSRC] = file
 		}
-		// Construct pion RTP packet from DiscordGo's type.
+		// DiscordGoの型からpion RTPパケットを構築
 		rtp := createPionRTPPacket(p)
 		err := file.WriteRTP(rtp)
 		if err != nil {
@@ -62,7 +65,8 @@ func handleVoice(c chan *discordgo.Packet) {
 		}
 	}
 
-	// Once we made it here, we're done listening for packets. Close all files
+	// パケットの受信が終了したら全てのファイルを閉じる
+	// これにより切断されても音声データが保存される
 	for _, f := range files {
 		f.Close()
 	}

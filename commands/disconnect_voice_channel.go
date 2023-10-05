@@ -23,7 +23,7 @@ func DisconnectCommand() *botHandler.Command {
 
 func disconnectVoiceChannel(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	/*
-		pingコマンドの実行
+		test_disconnectコマンドの実行
 
 		コマンドの実行結果を返す
 	*/
