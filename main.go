@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	botHandler "github.com/maguro-alternative/discord_go_bot/bot_handler"
+	botRouter "github.com/maguro-alternative/discord_go_bot/bot_handler/bot_router"
 	"github.com/maguro-alternative/discord_go_bot/commands"
 	"github.com/maguro-alternative/discord_go_bot/db"
 	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
@@ -38,12 +38,12 @@ func main() {
 	}
 
 	// ハンドラーの登録
-	botHandler.RegisterHandlers(discord)
+	botRouter.RegisterHandlers(discord)
 
-	var commandHandlers []*botHandler.Handler
+	var commandHandlers []*botRouter.Handler
 	// 所属しているサーバすべてにスラッシュコマンドを追加する
 	// NewCommandHandlerの第二引数を空にすることで、グローバルでの使用を許可する
-	commandHandler := botHandler.NewCommandHandler(discord, "")
+	commandHandler := botRouter.NewCommandHandler(discord, "")
 	// 追加したいコマンドをここに追加
 	commandHandler.CommandRegister(commands.PingCommand())
 	commandHandler.CommandRegister(commands.RecordCommand())

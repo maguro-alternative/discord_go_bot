@@ -5,13 +5,14 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	botHandler "github.com/maguro-alternative/discord_go_bot/bot_handler"
+	botRouter "github.com/maguro-alternative/discord_go_bot/bot_handler/bot_router"
+
 	"github.com/pion/rtp"
 	"github.com/pion/webrtc/v3/pkg/media"
 	"github.com/pion/webrtc/v3/pkg/media/oggwriter"
 )
 
-func RecordCommand() *botHandler.Command {
+func RecordCommand() *botRouter.Command {
 	/*
 		start_recordコマンドの定義
 
@@ -19,7 +20,7 @@ func RecordCommand() *botHandler.Command {
 		説明: 録音を開始します
 		オプション: なし
 	*/
-	return &botHandler.Command{
+	return &botRouter.Command{
 		Name:        "test_start_record",
 		Description: "録音を開始します",
 		Options:     []*discordgo.ApplicationCommandOption{},

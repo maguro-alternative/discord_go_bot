@@ -1,10 +1,12 @@
 // handlers.go
-package botHandler
+package botRouter
 
 import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+
+	"github.com/maguro-alternative/discord_go_bot/bot_handler"
 )
 
 /*
@@ -24,8 +26,8 @@ type Handler struct {
 // ハンドラーの登録
 func RegisterHandlers(s *discordgo.Session) {
 	fmt.Println(s.State.User.Username + "としてログインしました")
-	s.AddHandler(OnMessageCreate)
-	s.AddHandler(OnVoiceStateUpdate)
+	s.AddHandler(botHandler.OnMessageCreate)
+	s.AddHandler(botHandler.OnVoiceStateUpdate)
 }
 
 // スラッシュコマンドの作成

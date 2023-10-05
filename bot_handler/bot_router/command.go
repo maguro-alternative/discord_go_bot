@@ -1,4 +1,4 @@
-package botHandler
+package botRouter
 
 import "github.com/bwmarrin/discordgo"
 
