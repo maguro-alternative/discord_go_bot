@@ -25,6 +25,7 @@ type Handler struct {
 func RegisterHandlers(s *discordgo.Session) {
 	fmt.Println(s.State.User.Username + "としてログインしました")
 	s.AddHandler(OnMessageCreate)
+	s.AddHandler(OnVoiceStateUpdate)
 }
 
 // スラッシュコマンドの作成
