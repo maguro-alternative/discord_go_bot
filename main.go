@@ -11,7 +11,7 @@ import (
 	"github.com/maguro-alternative/discord_go_bot/commands"
 	"github.com/maguro-alternative/discord_go_bot/db"
 	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
-	"github.com/maguro-alternative/discord_go_bot/model"
+	"github.com/maguro-alternative/discord_go_bot/model/envconfig"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -21,7 +21,7 @@ var discord *discordgo.Session
 
 func main() {
 	//Discordのセッションを作成
-	env,err := model.NewEnv()
+	env,err := envconfig.NewEnv()
 	Token := "Bot " + env.TOKEN //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	discord, err := discordgo.New(Token)
 

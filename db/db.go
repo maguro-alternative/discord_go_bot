@@ -10,7 +10,7 @@ import (
 )
 
 //go:embed schema.sql
-var schema string
+var schema string	// schema.sqlの内容をschemaに代入
 
 // NewDB returns go-sqlite3 driver based *sql.DB.
 func NewSqliteDB(path string) (*sql.DB, error) {
