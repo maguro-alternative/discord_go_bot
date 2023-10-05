@@ -16,19 +16,13 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var (
-	Token     = "Bot " + os.Getenv("TOKEN") //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
-	stopBot   = make(chan bool)
-	vcsession *discordgo.VoiceConnection
-)
-
 // セッションの定義
 var discord *discordgo.Session
 
 func main() {
 	//Discordのセッションを作成
 	env,err := model.NewEnv()
-	Token = "Bot " + env.TOKEN //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
+	Token := "Bot " + env.TOKEN //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	discord, err := discordgo.New(Token)
 
 	// 権限追加
@@ -48,6 +42,7 @@ func main() {
 
 	var commandHandlers []*handlers.Handler
 	// 所属しているサーバすべてにスラッシュコマンドを追加する
+	// NewCommandHandlerの第二引数を空にすることで、グローバルでの使用を許可する
 	commandHandler := handlers.NewCommandHandler(discord, "")
 	// 追加したいコマンドをここに追加
 	commandHandler.CommandRegister(commands.PingCommand())
