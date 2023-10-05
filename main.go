@@ -76,13 +76,15 @@ func main() {
 		dbPath = defaultDBPath
 	}
 
-	todoDB, err := db.NewDB(dbPath)
+	indexDB, err := db.NewDB(dbPath)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	mux := router.NewRouter(todoDB)
-	log.Fatal(http.ListenAndServe(port, mux))
+	mux := router.NewRouter(indexDB)
+	// サーバーの待ち受けを開始
+	log.Printf("Serving HTTP port: %s\n", port)
+	go log.Fatal(http.ListenAndServe(port, mux))
 
 	// Ctrl+Cを受け取るためのチャンネル
 	sc := make(chan os.Signal, 1)

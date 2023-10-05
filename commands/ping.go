@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/maguro-alternative/discord_go_bot/bot_handler"
+	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
 )
 
 func PingCommand() *handlers.Command {

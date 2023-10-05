@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/maguro-alternative/discord_go_bot/bot_handler"
-
 	"github.com/bwmarrin/discordgo"
+	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
 	"github.com/pion/rtp"
 	"github.com/pion/webrtc/v3/pkg/media"
 	"github.com/pion/webrtc/v3/pkg/media/oggwriter"
@@ -71,9 +70,9 @@ func handleVoice(c chan *discordgo.Packet) {
 
 func recordVoice(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	/*
-	録音の開始
+		録音の開始
 
-	コマンドの実行結果を返す
+		コマンドの実行結果を返す
 	*/
 	if i.Interaction.ApplicationCommandData().Name == "test_start_record" {
 		vs, err := s.State.VoiceState(i.GuildID, i.Interaction.Member.User.ID)
@@ -86,7 +85,7 @@ func recordVoice(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			responsText(s, i, "ボイスチャンネルに接続していません")
 			return
 		}
-		responsText(s, i, "録音を開始します <#" + vs.ChannelID + ">")
+		responsText(s, i, "録音を開始します <#"+vs.ChannelID+">")
 		v, err := s.ChannelVoiceJoin(i.GuildID, vs.ChannelID, true, false)
 		//fmt.Println(v)
 		if err != nil {
