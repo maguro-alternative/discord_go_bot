@@ -1,4 +1,4 @@
-package server_handler
+package serverHandler
 
 import (
 	"encoding/json"

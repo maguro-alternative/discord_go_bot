@@ -15,7 +15,7 @@ func NewRouter(indeDB *sql.DB) *http.ServeMux {
 
 	// register routes
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", server_handler.NewIndexHandler(indexService).ServeHTTP)
+	mux.HandleFunc("/", serverHandler.NewIndexHandler(indexService).ServeHTTP)
 	//mux.HandleFunc("/todos", handler.NewTODOHandler(todoService).ServeHTTP)
 	return mux
 }
