@@ -2,10 +2,10 @@ package commands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
+	botHandler "github.com/maguro-alternative/discord_go_bot/bot_handler"
 )
 
-func DisconnectCommand() *handlers.Command {
+func DisconnectCommand() *botHandler.Command {
 	/*
 		disconnectコマンドの定義
 
@@ -13,7 +13,7 @@ func DisconnectCommand() *handlers.Command {
 		説明: 接続中のボイスチャンネルから切断します
 		オプション: なし
 	*/
-	return &handlers.Command{
+	return &botHandler.Command{
 		Name:        "test_disconnect",
 		Description: "接続中のボイスチャンネルから切断します",
 		Options:     []*discordgo.ApplicationCommandOption{},

@@ -1,4 +1,4 @@
-package handlers
+package botHandler
 
 import (
 	"flag"

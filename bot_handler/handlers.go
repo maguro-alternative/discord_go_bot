@@ -1,5 +1,5 @@
 // handlers.go
-package handlers
+package botHandler
 
 import (
 	"fmt"

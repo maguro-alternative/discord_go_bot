@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
+	botHandler "github.com/maguro-alternative/discord_go_bot/bot_handler"
 	"github.com/maguro-alternative/discord_go_bot/commands"
 	"github.com/maguro-alternative/discord_go_bot/db"
 	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
@@ -38,12 +38,12 @@ func main() {
 	}
 
 	// ハンドラーの登録
-	handlers.RegisterHandlers(discord)
+	botHandler.RegisterHandlers(discord)
 
-	var commandHandlers []*handlers.Handler
+	var commandHandlers []*botHandler.Handler
 	// 所属しているサーバすべてにスラッシュコマンドを追加する
 	// NewCommandHandlerの第二引数を空にすることで、グローバルでの使用を許可する
-	commandHandler := handlers.NewCommandHandler(discord, "")
+	commandHandler := botHandler.NewCommandHandler(discord, "")
 	// 追加したいコマンドをここに追加
 	commandHandler.CommandRegister(commands.PingCommand())
 	commandHandler.CommandRegister(commands.RecordCommand())
@@ -58,7 +58,6 @@ func main() {
 	go func() {
 		const (
 			defaultPort   = ":8080"
-			defaultDBPath = ".sqlite3/todo.db"
 		)
 
 		port := env.ServerPort

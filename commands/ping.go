@@ -4,10 +4,10 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
-	handlers "github.com/maguro-alternative/discord_go_bot/bot_handler"
+	botHandler "github.com/maguro-alternative/discord_go_bot/bot_handler"
 )
 
-func PingCommand() *handlers.Command {
+func PingCommand() *botHandler.Command {
 	/*
 		pingコマンドの定義
 
@@ -15,7 +15,7 @@ func PingCommand() *handlers.Command {
 		説明: Pong!
 		オプション: なし
 	*/
-	return &handlers.Command{
+	return &botHandler.Command{
 		Name:        "ping",
 		Description: "Pong!",
 		Options:     []*discordgo.ApplicationCommandOption{},

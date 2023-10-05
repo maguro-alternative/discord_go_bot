@@ -1,5 +1,5 @@
 // messageCreate.go
-package handlers
+package botHandler
 
 import (
 	"fmt"
