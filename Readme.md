@@ -9,28 +9,8 @@ go mod download
 その後、.envファイルを作成し、以下のように記述してください。
 ```env
 TOKEN=DiscordのBotのトークン
-PGUSER=PostgreSQLのユーザー名
-PGPASSWORD=PostgreSQLのパスワード
-PGDATABASE=PostgreSQLのデータベース名
-PGHOST=PostgreSQLのホスト名
-PGPORT=PostgreSQLのポート番号
+PORT=httpサーバーのポート番号
 ```
-sqlite3を使う場合は、```main.go```の
-```env
-dbPath := env.DatabaseType + "://" + env.DatabaseHost + ":" + env.DatabasePort + "/" + env.DatabaseName + "?" + "user=" + env.DatabaseUser + "&" + "password=" + env.DatabasePassword + "&" + "sslmode=disable"
-```
-と
-```
-indexDB, err := db.NewPostgresDB(dbPath)
-```
-をそれぞれ
-```
-dbPath := ".sqlite3/todo.db"
-```
-```
-indexDB, err := db.NewSqliteDB(dbPath)
-```
-に変更してください。
 
 # コマンドの追加
 ```commands```フォルダーにコマンドファイルを追加してください。  
