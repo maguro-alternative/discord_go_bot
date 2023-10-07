@@ -9,7 +9,6 @@ import (
 
 	botRouter "github.com/maguro-alternative/discord_go_bot/bot_handler/bot_router"
 	"github.com/maguro-alternative/discord_go_bot/commands"
-	"github.com/maguro-alternative/discord_go_bot/db"
 	"github.com/maguro-alternative/discord_go_bot/server_handler/router"
 	"github.com/maguro-alternative/discord_go_bot/model/envconfig"
 
@@ -64,15 +63,8 @@ func main() {
 		if port == "" {
 			port = defaultPort
 		}
-		//dbPath := env.DatabaseURL
-		dbPath := env.DatabaseType + "://" + env.DatabaseHost + ":" + env.DatabasePort + "/" + env.DatabaseName + "?" + "user=" + env.DatabaseUser + "&" + "password=" + env.DatabasePassword + "&" + "sslmode=disable"
 
-		indexDB, err := db.NewPostgresDB(dbPath)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		mux := router.NewRouter(indexDB)
+		mux := router.NewRouter()
 		log.Printf("Serving HTTP port: %s\n", port)
 		log.Fatal(http.ListenAndServe(port, mux))
 	}()

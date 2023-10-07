@@ -13,7 +13,7 @@ type IndexHandler struct {
 	svc *service.IndexService
 }
 
-// NewTODOHandler returns TODOHandler based http.Handler.
+// http.HandlerをベースにしたIndexHandlerを返す
 func NewIndexHandler(svc *service.IndexService) *IndexHandler {
 	return &IndexHandler{
 		svc: svc,

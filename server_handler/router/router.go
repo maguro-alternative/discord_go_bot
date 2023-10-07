@@ -1,7 +1,6 @@
 package router
 
 import (
-	"database/sql"
 	"net/http"
 
 
@@ -9,13 +8,12 @@ import (
 	"github.com/maguro-alternative/discord_go_bot/service"
 )
 
-func NewRouter(indeDB *sql.DB) *http.ServeMux {
-	// create a *service.TODOService type variable using the *sql.DB type variable
-	var indexService = service.NewIndexService(indeDB)
+func NewRouter() *http.ServeMux {
+	// *service.IndexService型変数を作成する。
+	var indexService = service.NewIndexService()
 
 	// register routes
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", serverHandler.NewIndexHandler(indexService).ServeHTTP)
-	//mux.HandleFunc("/todos", handler.NewTODOHandler(todoService).ServeHTTP)
 	return mux
 }
