@@ -25,7 +25,7 @@ func NewEnv() (*Env, error) {
 	}
 
 	return &Env{
-		TOKEN:            os.Getenv("D_TOKEN"),
+		TOKEN:            os.Getenv("TOKEN"),
 		DatabaseType:	  "postgresql",
 		DatabaseURL:      os.Getenv("PGURL"),
 		DatabaseName:     os.Getenv("PGDATABASE"),
