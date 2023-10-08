@@ -18,10 +18,8 @@ RUN apt-get install -y ffmpeg
 
 RUN go mod download
 
-RUN go build -o ./ ./main.go
-
-FROM bullseye AS runner
-
-COPY --from=builder /root/src .
+RUN go build ./main.go
 
 EXPOSE 8080
+
+CMD [ "./main" ]
