@@ -40,6 +40,7 @@ func main() {
 	}
 	// websocketを開いてlistening開始
 	if err = discord.Open(); err != nil {
+		fmt.Println(err)
 		panic("Error while opening session")
 	}
 
