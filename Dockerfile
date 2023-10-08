@@ -20,7 +20,7 @@ RUN go mod download
 
 RUN go build -o ./ ./main.go
 
-FROM 1.20.4-bullseye AS runner
+FROM bullseye AS runner
 
 COPY --from=builder /root/src .
 
