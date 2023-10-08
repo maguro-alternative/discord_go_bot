@@ -21,7 +21,7 @@ RUN go mod download
 RUN go build -o /app/main ./main.go
 
 # Runner用の新しいステージを開始
-FROM debian:buster-slim AS runner
+FROM debian:latest AS runner
 
 RUN apt-get update && apt-get install -y locales && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
