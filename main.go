@@ -64,7 +64,7 @@ func main() {
 			port = defaultPort
 		}
 
-		mux := router.NewRouter()
+		mux := router.NewRouter(discord)
 		log.Printf("Serving HTTP port: %s\n", port)
 		log.Fatal(http.ListenAndServe(port, mux))
 	}()

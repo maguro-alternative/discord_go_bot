@@ -6,11 +6,13 @@ import (
 
 	"github.com/maguro-alternative/discord_go_bot/server_handler"
 	"github.com/maguro-alternative/discord_go_bot/service"
+
+	"github.com/bwmarrin/discordgo"
 )
 
-func NewRouter() *http.ServeMux {
+func NewRouter(discordSession *discordgo.Session) *http.ServeMux {
 	// *service.IndexService型変数を作成する。
-	var indexService = service.NewIndexService()
+	var indexService = service.NewIndexService(discordSession)
 
 	// register routes
 	mux := http.NewServeMux()

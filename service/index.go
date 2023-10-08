@@ -1,8 +1,16 @@
 package service
 
-type IndexService struct {}
+import (
+	"github.com/bwmarrin/discordgo"
+)
+
+type IndexService struct {
+	DiscordSession *discordgo.Session
+}
 
 // IndexServiceを返す
-func NewIndexService() *IndexService {
-	return &IndexService{}
+func NewIndexService(discordSession *discordgo.Session) *IndexService {
+	return &IndexService{
+		DiscordSession : discordSession,
+	}
 }
