@@ -63,13 +63,14 @@ func main() {
 	// ここでサーバーを起動すると、Ctrl+Cで終了するまでサーバーが起動し続ける
 	go func() {
 		const (
-			defaultPort   = ":8080"
+			defaultPort   = "8080"
 		)
 
 		port := env.ServerPort
 		if port == "" {
 			port = defaultPort
 		}
+		port = ":" + port
 
 		mux := router.NewRouter(discord)
 		log.Printf("Serving HTTP port: %s\n", port)
