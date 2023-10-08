@@ -21,6 +21,13 @@ var discord *discordgo.Session
 func main() {
 	//Discordのセッションを作成
 	env,err := envconfig.NewEnv()
+	if err != nil {
+		fmt.Println("error loading env")
+		env = &envconfig.Env{
+			TOKEN:            os.Getenv("TOKEN"),
+			ServerPort:       os.Getenv("PORT"),
+		}
+	}
 	Token := "Bot " + env.TOKEN //"Bot"という接頭辞がないと401 unauthorizedエラーが起きます
 	discord, err := discordgo.New(Token)
 
