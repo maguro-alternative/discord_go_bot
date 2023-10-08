@@ -20,22 +20,22 @@ RUN go mod download
 
 RUN go build -o /app/main ./main.go
 
-# Runner用の新しいステージを開始
-FROM debian:latest AS runner
-
-RUN apt-get update && apt-get install -y locales && \
-    localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
-ENV LANG ja_JP.UTF-8
-ENV LANGUAGE ja_JP:ja
-ENV LC_ALL ja_JP.UTF-8
-ENV TZ JST-9
-ENV TERM xterm
-
-# ビルダーステージからバイナリをコピー
-COPY --from=builder /app/main /app/main
-
 # ポート8080を外部に公開
 EXPOSE 8080
 
 # アプリケーションを実行
 CMD ["/app/main"]
+
+# Runner用の新しいステージを開始
+#FROM debian:latest AS runner
+
+#RUN apt-get update && apt-get install -y locales && \
+#    localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
+#ENV LANG ja_JP.UTF-8
+#ENV LANGUAGE ja_JP:ja
+#ENV LC_ALL ja_JP.UTF-8
+#ENV TZ JST-9
+#ENV TERM xterm
+
+# ビルダーステージからバイナリをコピー
+#COPY --from=builder /app/main /app/main
