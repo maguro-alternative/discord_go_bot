@@ -1,4 +1,4 @@
-FROM golang:1.20.4-bullseye
+FROM golang:1.20.4-bullseye AS builder
 
 RUN apt-get -y update && apt-get -y install locales && apt-get -y upgrade && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
@@ -18,6 +18,10 @@ RUN apt-get install -y ffmpeg
 
 RUN go mod download
 
-EXPOSE 8080
+RUN go build -o ./ ./main.go
 
-CMD ["go", "run", "main.go"]
+FROM 1.20.4-bullseye AS runner
+
+COPY --from=builder /root/src .
+
+EXPOSE 8080
