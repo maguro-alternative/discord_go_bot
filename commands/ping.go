@@ -29,18 +29,20 @@ func handlePing(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 		コマンドの実行結果を返す
 	*/
-	if i.Interaction.ApplicationCommandData().Name == "ping" {
-		if i.Interaction.GuildID == i.GuildID {
-			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseChannelMessageWithSource,
-				Data: &discordgo.InteractionResponseData{
-					Content: "Pong",
-				},
-			})
-			if err != nil {
-				fmt.Printf("error responding to ping command: %v\n", err)
-			}
-		}
+	if i.Interaction.ApplicationCommandData().Name != "ping" {
+		return
+	}
+	if i.Interaction.GuildID != i.GuildID {
+		return
+	}
+	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: "Pong",
+		},
+	})
+	if err != nil {
+		fmt.Printf("error responding to ping command: %v\n", err)
 	}
 
 }
